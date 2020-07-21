@@ -5,5 +5,6 @@
 #include <vector>
 #include <complex>
 #include <cmath>
+#include <math.h>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
