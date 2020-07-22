@@ -2,22 +2,23 @@
 #include "Audio.h"
 
 int main() {
-	//sf::RenderWindow window(sf::VideoMode(200, 200), "Audio-Visualizer");
+	sf::RenderWindow window(sf::VideoMode(200, 200), "Audio-Visualizer");
 	Audio audio = Audio();
+	audio.playSong();
 
-	//while (window.isOpen())
-	//{
-		//sf::Event event;
-		//while (window.pollEvent(event))
-		//{
-			//if (event.type == sf::Event::Closed)
-				//window.close();
-		//}
+	while (window.isOpen())
+	{
+		sf::Event event;
+		while (window.pollEvent(event))
+		{
+			if (event.type == sf::Event::Closed)
+				window.close();
+		}
 
-		//window.clear();
+		window.clear();
 
-		//window.display();
-	//}
+		window.display();
+	}
 
 	return 0;
 }

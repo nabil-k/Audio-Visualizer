@@ -1,6 +1,4 @@
 ﻿  main.cpp
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(31): warning C4244: '=': conversion from 'sf::Uint64' to 'int', possible loss of data
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(38): warning C4018: '<': signed/unsigned mismatch
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(49): warning C4018: '<': signed/unsigned mismatch
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(103): warning C4018: '<': signed/unsigned mismatch
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(38): warning C4244: '=': conversion from 'sf::Uint64' to 'int', possible loss of data
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(128): warning C4018: '<': signed/unsigned mismatch
   Audio-Visualizer.vcxproj -> C:\Users\duoma\Desktop\Audio-Visualizer\Debug\Audio-Visualizer.exe
