@@ -9,19 +9,35 @@ class Audio {
 	unsigned int sampleRate;
 	sf::Uint64 sampleSize;
 	int singleChannelSize;
-
+	
+	std::vector< std::complex <double> > leftSamples;
+	std::vector<double> sampleFrequencyRanges;
+	
 	sf::Sound sound;
-
 	sf::SoundBuffer buffer;
 	sf::SoundBuffer leftBuffer;
 	sf::SoundBuffer rightBuffer;
+	sf::RectangleShape SubBass_Rect;
 
+	std::vector<sf::RectangleShape> freqRangeRects;
 
-	
 
 	public:
-
 		Audio() {
+
+			for (int ranges = 0; ranges < 7; ranges++) {
+				sf::RectangleShape freqRangeRect = sf::RectangleShape();
+
+				freqRangeRect.setSize(sf::Vector2f(100, 300));
+				freqRangeRect.setPosition(300 + (100* ranges), 180);
+		
+				freqRangeRect.setFillColor(sf::Color::Black);
+				freqRangeRect.setOutlineColor(sf::Color::White);
+				freqRangeRect.setOutlineThickness(5.f);
+
+				freqRangeRects.push_back(freqRangeRect);
+			}
+
 			
 			sf::Sound leftPlayer;
 			if (!buffer.loadFromFile(audioFilePath)) {
@@ -29,58 +45,48 @@ class Audio {
 			}
 			else {
 				sampleRate = buffer.getSampleRate();
-				
-				
 				// Original sample (unsplit denoting the samples holding the left and right channels
 				samples = buffer.getSamples();
-				
 				sampleSize = buffer.getSampleCount();
 				singleChannelSize = sampleSize / 2;
+			}
 
-				// Sample arrays for right and left channels
-				std::vector< std::complex <double> > leftSamples(singleChannelSize);
-				//std::vector< std::complex <double> > rightSamples(singleChannelSize);
+		}
 
-				// Seperates samples_unsplit into the left and right samples
-				for (int i = 0; i < singleChannelSize; ++i) {
-					leftSamples[i] = samples[(2*i)];
-					//rightSamples[i] = samples[(2*i) + 1];
-				}
-				std::cout << "Done Splitting" << std::endl;
+		bool splitAudioChannel() {
+			// Sample arrays for right and left channels
+			leftSamples.resize(singleChannelSize);
+			for (int i = 0; i < singleChannelSize; ++i) {
+				leftSamples[i] = samples[2 * i];
+			}
+			std::cout << "Finished splitting audio channels" << std::endl;
 
+			return true;
+		}
+
+		void outputsampleOverFrequencyVector(std::vector<double> vector){
+			for (int i = 0; i < vector.size(); ++i) {
+				std::cout << i << " " << vector[i] << std::endl;
+			}
+		}
+
+		// Creates frequency ranges for the audio samples
+		void getSampleOverFrequency() {
+
+			if (splitAudioChannel()) {
 				for (int sampleIndex = 0; sampleIndex < singleChannelSize; sampleIndex += 256) {
 					std::vector< std::complex< double> >::const_iterator first = leftSamples.begin() + sampleIndex;
 					std::vector< std::complex< double> >::const_iterator last = leftSamples.begin() + (sampleIndex + sampleRate);
 					std::vector< std::complex< double> > leftSampleSample(first, last);
 
 					std::vector< std::complex< double> > transform = FFT(leftSampleSample);
-					std::vector<double>  y = magnitudeOfComplexVector(transform);
-					std::cout << y.size() << std::endl;
+					std::vector<double> sampleOverFrequency = magnitudeOfComplexVector(transform);
+					outputsampleOverFrequencyVector(sampleOverFrequency);
 				}
-
-				
-		
-				
-				sound.setBuffer(leftBuffer);
-				std::cout << "Playing sound..." << std::endl;
-				//sound.play();
-
-				//leftBuffer.loadFromSamples(leftSamples, singleChannelSize, 1u, sampleRate);
-				//rightBuffer.loadFromSamples(rightSamples, singleChannelSize, 1u, sampleRate);
-		
-
 			}
 
-
-
-
-	
 		}
-		
-		void playSong() {
-			//sound.setBuffer(leftBuffer);
-			//sound.play();
-		}
+
 
 		std::vector< std::complex< double> > FFT(std::vector< std::complex <double> > &samples) {
 			int N = samples.size();
@@ -134,6 +140,10 @@ class Audio {
 		
 			return complexVectorMagnitudes;
 
+		}
+
+		std::vector<sf::RectangleShape>& getFreqRangeRects() {
+			return freqRangeRects;
 		}
 
 };
