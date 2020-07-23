@@ -21,24 +21,8 @@ class Audio {
 	sf::SoundBuffer rightBuffer;
 	sf::RectangleShape SubBass_Rect;
 
-	std::vector<sf::RectangleShape> freqRangeRects;
-
-
 	public:
 		Audio() {
-
-			for (int ranges = 0; ranges < 29; ranges++) {
-				sf::RectangleShape freqRangeRect = sf::RectangleShape();
-
-				freqRangeRect.setSize(sf::Vector2f(48, 300));
-				freqRangeRect.setPosition(160 + (48* ranges), 180);
-		
-				freqRangeRect.setFillColor(sf::Color::White);
-				freqRangeRect.setOutlineColor(sf::Color::Black);
-				freqRangeRect.setOutlineThickness(1.f);
-
-				freqRangeRects.push_back(freqRangeRect);
-			}
 
 			if (!buffer.loadFromFile(audioFilePath)) {
 				std::cout << "Couldn't load buffer" << std::endl;
@@ -199,8 +183,9 @@ class Audio {
 
 		}
 
-		std::vector<sf::RectangleShape>& getFreqRangeRects() {
-			return freqRangeRects;
+		std::vector< std::vector <double> > getfrequencyVisualizationVector() {
+			return frequencyVisualizationVector;
 		}
+
 
 };

@@ -1,11 +1,15 @@
 #include "main.h"
 #include "Audio.h"
+#include "Visualizer.h"
+
 
 int main() {
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "Audio-Visualizer");
 	Audio audio = Audio();
 	audio.getSampleOverFrequency();
-	std::vector<sf::RectangleShape> freqRangeRects = audio.getFreqRangeRects();
+
+	Visualizer visualizer = Visualizer(audio.getfrequencyVisualizationVector());
+	
 
 	while (window.isOpen())
 	{
@@ -21,6 +25,10 @@ int main() {
 		
 
 		window.clear(sf::Color::Black);
+
+		visualizer.update();
+
+		std::vector<sf::RectangleShape> freqRangeRects = visualizer.getFreqRangeRects();
 
 		for (int i = 0; i < freqRangeRects.size(); i++) {
 			window.draw(freqRangeRects[i]);

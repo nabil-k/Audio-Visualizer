@@ -1,13 +1,19 @@
 ﻿  main.cpp
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(34): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(51): warning C4244: '=': conversion from 'sf::Uint64' to 'int', possible loss of data
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(63): warning C4018: '<': signed/unsigned mismatch
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(73): warning C4018: '<': signed/unsigned mismatch
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(146): warning C4018: '<': signed/unsigned mismatch
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\main.cpp(25): warning C4018: '<': signed/unsigned mismatch
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(35): warning C4244: '=': conversion from 'sf::Uint64' to 'int', possible loss of data
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(47): warning C4018: '<': signed/unsigned mismatch
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(57): warning C4018: '<': signed/unsigned mismatch
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(130): warning C4018: '<': signed/unsigned mismatch
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\visualizer.h(20): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\visualizer.h(37): warning C4018: '<': signed/unsigned mismatch
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\visualizer.h(39): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\main.cpp(33): warning C4018: '<': signed/unsigned mismatch
   Generating code
-  85 of 416 functions (20.4%) were compiled, the rest were copied from previous compilation.
-    62 functions were new in current compilation
-    36 functions had inline decision re-evaluated but remain unchanged
+  2 of 482 functions ( 0.4%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   Audio-Visualizer.vcxproj -> C:\Users\duoma\Desktop\Audio-Visualizer\Release\Audio-Visualizer.exe
