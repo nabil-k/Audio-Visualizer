@@ -24,7 +24,6 @@ int main() {
 
 		for (int i = 0; i < freqRangeRects.size(); i++) {
 			window.draw(freqRangeRects[i]);
-			std::cout << freqRangeRects[i].getPosition().x << std::endl;
 		}
 
 		window.display();

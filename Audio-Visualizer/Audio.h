@@ -13,6 +13,7 @@ class Audio {
 	
 	std::vector< std::complex <double> > leftSamples;
 	std::vector<double> sampleFrequencyRanges;
+	std::vector< std::vector <double> > frequencyVisualizationVector;
 	
 	sf::Sound sound;
 	sf::SoundBuffer buffer;
@@ -26,27 +27,25 @@ class Audio {
 	public:
 		Audio() {
 
-			for (int ranges = 0; ranges < 7; ranges++) {
+			for (int ranges = 0; ranges < 29; ranges++) {
 				sf::RectangleShape freqRangeRect = sf::RectangleShape();
 
-				freqRangeRect.setSize(sf::Vector2f(100, 300));
-				freqRangeRect.setPosition(300 + (100* ranges), 180);
+				freqRangeRect.setSize(sf::Vector2f(48, 300));
+				freqRangeRect.setPosition(160 + (48* ranges), 180);
 		
-				freqRangeRect.setFillColor(sf::Color::Black);
-				freqRangeRect.setOutlineColor(sf::Color::White);
-				freqRangeRect.setOutlineThickness(5.f);
+				freqRangeRect.setFillColor(sf::Color::White);
+				freqRangeRect.setOutlineColor(sf::Color::Black);
+				freqRangeRect.setOutlineThickness(1.f);
 
 				freqRangeRects.push_back(freqRangeRect);
 			}
 
-			
-			sf::Sound leftPlayer;
 			if (!buffer.loadFromFile(audioFilePath)) {
 				std::cout << "Couldn't load buffer" << std::endl;
 			}
 			else {
 				sampleRate = buffer.getSampleRate();
-				// Original sample (unsplit denoting the samples holding the left and right channels
+				// Original sample (unsplit: the samples holding the left and right channels)
 				samples = buffer.getSamples();
 				sampleSize = buffer.getSampleCount();
 				singleChannelSize = sampleSize / 2;
@@ -55,12 +54,12 @@ class Audio {
 		}
 
 		bool splitAudioChannel() {
-			// Sample arrays for right and left channels
+			// Sample arrays for left channel
 			leftSamples.resize(singleChannelSize + sampleRate);
 			for (int i = 0; i < singleChannelSize; ++i) {
 				leftSamples[i] = samples[2 * i];
 			}
-			// Padding values
+			// Padding data to audio channel
 			for (int i = singleChannelSize; i < leftSamples.size(); ++i) {
 				leftSamples[i] = 0;
 			}
@@ -80,19 +79,17 @@ class Audio {
 		void getSampleOverFrequency() {
 
 			if (splitAudioChannel()) {
+				// Gets a sample from the audio channel to process, samples are the size of the sampleRate
 				for (int sampleIndex = 0; sampleIndex < singleChannelSize; sampleIndex += sampleRate) {
 					std::cout << sampleIndex << "/" << singleChannelSize << std::endl;
-					std::cout << (sampleIndex + sampleRate) << std::endl;
+					
 					std::vector< std::complex< double> >::const_iterator first = leftSamples.begin() + sampleIndex;
 					std::vector< std::complex< double> >::const_iterator last = leftSamples.begin() + (sampleIndex + sampleRate);
 					std::vector< std::complex< double> > leftSampleSample(first, last);
-					std::cout << "Starting Another Batch..." << std::endl;
-					std::vector< std::complex< double> > transform = FFT(leftSampleSample);
-					std::cout << "Computed Transform" << std::endl;
-					std::vector<double> sampleOverFrequency = magnitudeOfComplexVector(transform);
-					std::cout << "Computed Magnitude" << std::endl;
-					//outputsampleOverFrequencyVector(sampleOverFrequency);
-					std::cout << "Analyzed Batch" << std::endl;
+
+					std::vector< std::complex< double> > leftSampleSample_FreqBin = FFT(leftSampleSample);
+					frequencyVisualizationVector.push_back(createFrequencyVisualizationVector(leftSampleSample_FreqBin));
+					
 				}
 			}
 
@@ -108,6 +105,7 @@ class Audio {
 
 			int new_N = N / 2;
 
+			// Splits samples for recursion
 			std::vector< std::complex< double> > evenSamples(new_N, 0);
 			std::vector< std::complex< double> > oddSamples(new_N, 0);
 
@@ -116,12 +114,13 @@ class Audio {
 				oddSamples[i] = samples[(i * 2) + 1];
 			}
 
+			// Recursion breaks down the samples
 			std::vector< std::complex< double> > Feven(new_N, 0);
 			Feven = FFT(evenSamples);
 			std::vector< std::complex< double> > Fodd(new_N, 0);
 			Fodd = FFT(oddSamples);
 
-			// After recursion
+			// Post recursion DFT is calculated
 			std::vector< std::complex< double> > freqBins(N, 0);
 
 			for (int k = 0; k < N / 2; ++k) {
@@ -134,22 +133,69 @@ class Audio {
 
 		}
 
-		std::vector<double> magnitudeOfComplexVector(std::vector< std::complex< double> > complexVector) {
+		std::vector<double> createFrequencyVisualizationVector(std::vector< std::complex< double> > complexVector) {
 			int samplingFrequency = complexVector.size();
 			std::vector< std::complex< double> >::const_iterator first = complexVector.begin();
 			std::vector< std::complex< double> >::const_iterator last = complexVector.begin() + (complexVector.size()/2);
 			std::vector< std::complex< double> > complexVector_NyquistLimited(first, last);
 
-			std::vector<double> complexVectorMagnitudes(complexVector_NyquistLimited.size());
+			std::vector<double> frequencyVisualizationVector(29);
 			
-			for (int i = 0; i < complexVectorMagnitudes.size(); i++) {
-				double real = complexVector[i].real() * 2 / samplingFrequency;
-				double imag = complexVector[i].imag() * 2 / samplingFrequency;
+			double magnitude_scaled_sum = 0;
+
+			for (int frequency = 0; frequency < complexVector_NyquistLimited.size(); frequency++) {
+				
+				double magnitude_scaled;
+				double magnitude_scaled_avg;
+
+				// Calculates magnitude from freq bin
+				double real = complexVector[frequency].real() * 2 / samplingFrequency;
+				double imag = complexVector[frequency].imag() * 2 / samplingFrequency;
 				double magnitude = sqrt(pow(real,2) + pow(imag, 2));
-				complexVectorMagnitudes[i] = magnitude;
+				
+				if (magnitude == 0) {
+					magnitude_scaled = 0;
+				}
+				else {
+					magnitude_scaled = (log10(magnitude + 1)) * 100.0;
+				}
+
+				if (magnitude_scaled > 300.0) {
+					magnitude_scaled = 300.0;
+				}
+
+				magnitude_scaled_sum += magnitude_scaled;
+				// Two seperate bools for setting freq ranges to give priority to freq ranges below 1khz
+				bool addLowFreqRangeValue = ((frequency % 100) == 0);
+				bool addHighFreqRangeValue = ((frequency % 1000) == 0);
+
+				// Sets the vector values to contain an average magnitude in a specific frequency range
+				if (frequency > 0) {
+					if (frequency <= 1000) {
+						if (addLowFreqRangeValue) {
+							magnitude_scaled_avg = magnitude_scaled_sum / 100.0;
+							magnitude_scaled_sum = 0;
+							//std::cout << (frequency / 100) - 1 << "= " << magnitude_scaled_avg << std::endl;
+							frequencyVisualizationVector[(frequency / 100) - 1] = magnitude_scaled_avg;
+						}
+					}
+					else{
+						if (frequency <= 20000) {
+							if (addHighFreqRangeValue) {
+								magnitude_scaled_avg = magnitude_scaled_sum / 1000.0;
+								//std::cout << 9 + (frequency / 1000) - 1 << "= " << magnitude_scaled_sum << std::endl;
+								magnitude_scaled_sum = 0;
+								frequencyVisualizationVector[9 + (frequency / 1000) - 1] = magnitude_scaled_avg;
+							}
+						}
+
+					}
+				}
+
+
 			}
 		
-			return complexVectorMagnitudes;
+			return frequencyVisualizationVector;
 
 		}
 
