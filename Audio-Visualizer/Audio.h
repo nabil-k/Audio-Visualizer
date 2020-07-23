@@ -4,6 +4,7 @@
 class Audio {
 	
 	std::string audioFilePath = "./audio/Rival x Cadmium - Seasons (feat. Harley Bird) [NCS Release].wav";
+	//std::string audioFilePath = "./audio/test4.wav";
 
 	const sf::Int16* samples;
 	unsigned int sampleRate;
@@ -55,10 +56,15 @@ class Audio {
 
 		bool splitAudioChannel() {
 			// Sample arrays for right and left channels
-			leftSamples.resize(singleChannelSize);
+			leftSamples.resize(singleChannelSize + sampleRate);
 			for (int i = 0; i < singleChannelSize; ++i) {
 				leftSamples[i] = samples[2 * i];
 			}
+			// Padding values
+			for (int i = singleChannelSize; i < leftSamples.size(); ++i) {
+				leftSamples[i] = 0;
+			}
+
 			std::cout << "Finished splitting audio channels" << std::endl;
 
 			return true;
@@ -74,14 +80,19 @@ class Audio {
 		void getSampleOverFrequency() {
 
 			if (splitAudioChannel()) {
-				for (int sampleIndex = 0; sampleIndex < singleChannelSize; sampleIndex += 256) {
+				for (int sampleIndex = 0; sampleIndex < singleChannelSize; sampleIndex += sampleRate) {
+					std::cout << sampleIndex << "/" << singleChannelSize << std::endl;
+					std::cout << (sampleIndex + sampleRate) << std::endl;
 					std::vector< std::complex< double> >::const_iterator first = leftSamples.begin() + sampleIndex;
 					std::vector< std::complex< double> >::const_iterator last = leftSamples.begin() + (sampleIndex + sampleRate);
 					std::vector< std::complex< double> > leftSampleSample(first, last);
-
+					std::cout << "Starting Another Batch..." << std::endl;
 					std::vector< std::complex< double> > transform = FFT(leftSampleSample);
+					std::cout << "Computed Transform" << std::endl;
 					std::vector<double> sampleOverFrequency = magnitudeOfComplexVector(transform);
-					outputsampleOverFrequencyVector(sampleOverFrequency);
+					std::cout << "Computed Magnitude" << std::endl;
+					//outputsampleOverFrequencyVector(sampleOverFrequency);
+					std::cout << "Analyzed Batch" << std::endl;
 				}
 			}
 

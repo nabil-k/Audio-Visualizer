@@ -4,7 +4,7 @@
 int main() {
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "Audio-Visualizer");
 	Audio audio = Audio();
-	//audio.getSampleOverFrequency();
+	audio.getSampleOverFrequency();
 	std::vector<sf::RectangleShape> freqRangeRects = audio.getFreqRangeRects();
 
 	while (window.isOpen())
