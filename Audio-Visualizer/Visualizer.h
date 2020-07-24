@@ -3,26 +3,20 @@
 
 class Visualizer {
 	std::vector<sf::RectangleShape> freqRangeRects;
-	std::vector< std::vector <double> > frequencyVisualizationVector;
-	std::vector<int> freqRangeRectsHeightDelta;
 	sf::Clock clock;
 	int frequencyFrame = 0;
 	int animation_frame = 1;
-	int framesToReachMagnitude = 3; // the lower the faster the change
+	int framesToReachMagnitude = 6; // the lower the faster the change
 
 	public:
-		Visualizer(std::vector< std::vector <double> > frequencyVisualizationVector) {
-
-			this->frequencyVisualizationVector = frequencyVisualizationVector;
-			freqRangeRectsHeightDelta.resize(frequencyVisualizationVector[0].size());
+		Visualizer() {
 
 			// Creates Rects for freq visualization
 			for (int ranges = 0; ranges < 29; ranges++) {
 				sf::RectangleShape freqRangeRect = sf::RectangleShape();
 
 				freqRangeRect.setSize(sf::Vector2f(33, 0));
-				freqRangeRect.setPosition(160 + (33 * ranges), 360);
-
+				freqRangeRect.setPosition(160 + (34 * ranges), 460);
 				freqRangeRect.setFillColor(sf::Color::White);
 				freqRangeRect.setOutlineColor(sf::Color::Black);
 				freqRangeRect.setOutlineThickness(1.f);
@@ -35,9 +29,10 @@ class Visualizer {
 			return freqRangeRects;
 		}
 
-		void update() {
+		void update(std::vector< std::vector <double> > frequencyVisualizationVector) {
 
-			if (clock.getElapsedTime().asSeconds() > 0.5) {
+
+			if (clock.getElapsedTime().asSeconds() > 0.1) {
 
 				frequencyFrame++;
 				clock.restart();
@@ -73,18 +68,6 @@ class Visualizer {
 
 							freqRangeRects[rect_i].setSize(sf::Vector2f(33, rectHeight_updated));
 
-						}
-					}
-					// Makes rect's height decay after it has reached its magnitude
-					else {
-						if (rectHeight <= 0) {
-
-							float rectDecayRate = 5.f;
-							float decayedRectHeight = rectHeight + rectDecayRate;
-							if (decayedRectHeight >= 0) {
-								decayedRectHeight = 0;
-							}
-							freqRangeRects[rect_i].setSize(sf::Vector2f(33, decayedRectHeight));
 						}
 					}
 

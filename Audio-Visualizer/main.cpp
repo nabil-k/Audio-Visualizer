@@ -1,6 +1,7 @@
 #include "main.h"
 #include "Audio.h"
 #include "Visualizer.h"
+#include <functional>
 
 
 int main() {
@@ -8,10 +9,8 @@ int main() {
 	window.setFramerateLimit(60);
 
 	Audio audio = Audio();
-	audio.getSampleOverFrequency();
-
-	Visualizer visualizer = Visualizer(audio.getfrequencyVisualizationVector());
-	audio.playSong();
+	std::thread frequencyAnalyzationThread(&Audio::getSampleOverFrequency,&audio);
+	Visualizer visualizer = Visualizer();
 	
 
 	while (window.isOpen())
@@ -24,18 +23,22 @@ int main() {
 		}
 
 
-
-		
-
 		window.clear(sf::Color::Black);
 
-		visualizer.update();
+		if (audio.getfrequencyVisualizationVector().size() > 10) {
+			if (!audio.songPlayed()) {
+				audio.playSong();
+			}
+			
+			visualizer.update(audio.getfrequencyVisualizationVector());
 
-		std::vector<sf::RectangleShape> freqRangeRects = visualizer.getFreqRangeRects();
+			std::vector<sf::RectangleShape> freqRangeRects = visualizer.getFreqRangeRects();
 
-		for (int i = 0; i < freqRangeRects.size(); i++) {
-			window.draw(freqRangeRects[i]);
+			for (int i = 0; i < freqRangeRects.size(); i++) {
+				window.draw(freqRangeRects[i]);
+			}
 		}
+
 
 		window.display();
 	}

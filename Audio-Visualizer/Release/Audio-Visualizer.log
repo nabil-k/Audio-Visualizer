@@ -1,18 +1,18 @@
 ﻿  main.cpp
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(33): warning C4244: '=': conversion from 'sf::Uint64' to 'int', possible loss of data
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(49): warning C4018: '<': signed/unsigned mismatch
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(59): warning C4018: '<': signed/unsigned mismatch
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(132): warning C4018: '<': signed/unsigned mismatch
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\visualizer.h(24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\visualizer.h(47): warning C4018: '<': signed/unsigned mismatch
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\visualizer.h(49): warning C4244: 'initializing': conversion from '_Ty' to 'float', possible loss of data
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(37): warning C4244: '=': conversion from 'sf::Uint64' to 'int', possible loss of data
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(58): warning C4018: '<': signed/unsigned mismatch
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(68): warning C4018: '<': signed/unsigned mismatch
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(142): warning C4018: '<': signed/unsigned mismatch
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\visualizer.h(19): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\visualizer.h(42): warning C4018: '<': signed/unsigned mismatch
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\visualizer.h(44): warning C4244: 'initializing': conversion from '_Ty' to 'float', possible loss of data
           with
           [
               _Ty=double
           ]
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\main.cpp(36): warning C4018: '<': signed/unsigned mismatch
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\main.cpp(37): warning C4018: '<': signed/unsigned mismatch
   Generating code
-  2 of 540 functions ( 0.4%) were compiled, the rest were copied from previous compilation.
+  2 of 520 functions ( 0.4%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
