@@ -12,11 +12,11 @@ class Visualizer {
 		Visualizer() {
 
 			// Creates Rects for freq visualization
-			for (int ranges = 0; ranges < 29; ranges++) {
+			for (int ranges = 0; ranges < 256; ranges++) {
 				sf::RectangleShape freqRangeRect = sf::RectangleShape();
 
-				freqRangeRect.setSize(sf::Vector2f(33, 0));
-				freqRangeRect.setPosition(160 + (34 * ranges), 460);
+				freqRangeRect.setSize(sf::Vector2f(3.75, 0));
+				freqRangeRect.setPosition(32 + (4.75 * ranges), 460);
 				freqRangeRect.setFillColor(sf::Color::White);
 				freqRangeRect.setOutlineColor(sf::Color::Black);
 				freqRangeRect.setOutlineThickness(1.f);
@@ -66,7 +66,7 @@ class Visualizer {
 								}
 							}
 
-							freqRangeRects[rect_i].setSize(sf::Vector2f(33, rectHeight_updated));
+							freqRangeRects[rect_i].setSize(sf::Vector2f(3.75, rectHeight_updated));
 
 						}
 					}

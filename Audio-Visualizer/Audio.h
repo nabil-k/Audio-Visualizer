@@ -4,6 +4,7 @@
 class Audio {
 	
 	std::string audioFilePath = "./audio/Rival x Cadmium - Seasons (feat. Harley Bird) [NCS Release].wav";
+	
 	//std::string audioFilePath = "./audio/test4.wav";
 	sf::Clock clock;
 	const sf::Int16* samples;
@@ -77,7 +78,7 @@ class Audio {
 				clock.restart();
 				// Gets a sample from the audio channel to process, samples are the size of the sampleRate
 				for (int sampleIndex = 0; sampleIndex < singleChannelSize; sampleIndex += sampleRate/10) {
-					std::cout << sampleIndex << "/" << singleChannelSize << std::endl;
+					
 					
 					std::vector< std::complex< double> >::const_iterator first = leftSamples.begin() + sampleIndex;
 					std::vector< std::complex< double> >::const_iterator last = leftSamples.begin() + (sampleIndex + sampleRate);
@@ -135,7 +136,7 @@ class Audio {
 			std::vector< std::complex< double> >::const_iterator last = complexVector.begin() + (complexVector.size()/2);
 			std::vector< std::complex< double> > complexVector_NyquistLimited(first, last);
 
-			std::vector<double> frequencyVisualizationVector(29);
+			std::vector<double> frequencyVisualizationVector(256);
 			
 			double magnitude_scaled_sum = 0;
 
@@ -153,7 +154,6 @@ class Audio {
 					magnitude_scaled = 0;
 				}
 				else {
-					//magnitude_scaled = (log10(magnitude + 1)) * 100.0;
 					magnitude_scaled = magnitude;
 				}
 
@@ -164,29 +164,16 @@ class Audio {
 				magnitude_scaled_sum += magnitude_scaled;
 
 				// Two seperate bools for setting freq ranges to give priority to freq ranges below 1khz
-				bool addLowFreqRangeValue = ((frequency % 100) == 0);
-				bool addHighFreqRangeValue = ((frequency % 1000) == 0);
+				bool addLowFreqRangeValue = ((frequency % 63) == 0);
 
 				// Sets the vector values to contain an average magnitude in a specific frequency range
 				if (frequency > 0) {
-					if (frequency <= 1000) {
+					if (frequency <= 16128) {
 						if (addLowFreqRangeValue) {
-							magnitude_scaled_avg = magnitude_scaled_sum / 100.0;
+							magnitude_scaled_avg = magnitude_scaled_sum / 63.0;
 							magnitude_scaled_sum = 0;
-							//std::cout << (frequency / 100) - 1 << "= " << magnitude_scaled_avg << std::endl;
-							frequencyVisualizationVector[(frequency / 100) - 1] = magnitude_scaled_avg;
+							frequencyVisualizationVector[(frequency / 63) - 1] = magnitude_scaled_avg;
 						}
-					}
-					else{
-						if (frequency <= 20000) {
-							if (addHighFreqRangeValue) {
-								magnitude_scaled_avg = magnitude_scaled_sum / 1000.0;
-								//std::cout << 9 + (frequency / 1000) - 1 << "= " << magnitude_scaled_sum << std::endl;
-								magnitude_scaled_sum = 0;
-								frequencyVisualizationVector[9 + (frequency / 1000) - 1] = magnitude_scaled_avg;
-							}
-						}
-
 					}
 				}
 
@@ -198,7 +185,6 @@ class Audio {
 		}
 
 		std::vector< std::vector <double> > getfrequencyVisualizationVector() {
-			std::cout << frequencyVisualizationVector.size() << std::endl;
 			return frequencyVisualizationVector;
 		}
 

@@ -23,12 +23,10 @@ int main() {
 		}
 
 
-		window.clear(sf::Color::Black);
+		window.clear(sf::Color::Transparent);
 
 		if (audio.getfrequencyVisualizationVector().size() > 10) {
-			if (!audio.songPlayed()) {
-				audio.playSong();
-			}
+
 			
 			visualizer.update(audio.getfrequencyVisualizationVector());
 
@@ -37,6 +35,11 @@ int main() {
 			for (int i = 0; i < freqRangeRects.size(); i++) {
 				window.draw(freqRangeRects[i]);
 			}
+
+			if (!audio.songPlayed()) {
+				audio.playSong();
+			}
+
 		}
 
 
