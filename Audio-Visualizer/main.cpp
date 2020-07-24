@@ -5,10 +5,13 @@
 
 int main() {
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "Audio-Visualizer");
+	window.setFramerateLimit(60);
+
 	Audio audio = Audio();
 	audio.getSampleOverFrequency();
 
 	Visualizer visualizer = Visualizer(audio.getfrequencyVisualizationVector());
+	audio.playSong();
 	
 
 	while (window.isOpen())

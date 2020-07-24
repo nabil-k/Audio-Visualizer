@@ -17,9 +17,6 @@ class Audio {
 	
 	sf::Sound sound;
 	sf::SoundBuffer buffer;
-	sf::SoundBuffer leftBuffer;
-	sf::SoundBuffer rightBuffer;
-	sf::RectangleShape SubBass_Rect;
 
 	public:
 		Audio() {
@@ -28,6 +25,7 @@ class Audio {
 				std::cout << "Couldn't load buffer" << std::endl;
 			}
 			else {
+				sound.setBuffer(buffer);
 				sampleRate = buffer.getSampleRate();
 				// Original sample (unsplit: the samples holding the left and right channels)
 				samples = buffer.getSamples();
@@ -35,6 +33,10 @@ class Audio {
 				singleChannelSize = sampleSize / 2;
 			}
 
+		}
+
+		void playSong() {
+			sound.play();
 		}
 
 		bool splitAudioChannel() {
@@ -64,7 +66,7 @@ class Audio {
 
 			if (splitAudioChannel()) {
 				// Gets a sample from the audio channel to process, samples are the size of the sampleRate
-				for (int sampleIndex = 0; sampleIndex < singleChannelSize; sampleIndex += sampleRate) {
+				for (int sampleIndex = 0; sampleIndex < singleChannelSize; sampleIndex += sampleRate/2) {
 					std::cout << sampleIndex << "/" << singleChannelSize << std::endl;
 					
 					std::vector< std::complex< double> >::const_iterator first = leftSamples.begin() + sampleIndex;
