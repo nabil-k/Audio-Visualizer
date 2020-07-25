@@ -1,2 +1,2 @@
 # Audio-Visualizer
-An Audio Visualizer using the SFML library.
+An Audio Visualizer made using the SFML library.
