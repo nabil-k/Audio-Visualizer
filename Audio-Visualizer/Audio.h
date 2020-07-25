@@ -77,14 +77,21 @@ class Audio {
 			if (splitAudioChannel()) {
 				clock.restart();
 				// Gets a sample from the audio channel to process, samples are the size of the sampleRate
-				for (int sampleIndex = 0; sampleIndex < singleChannelSize; sampleIndex += sampleRate/10) {
+				int sampleWindow = sampleRate / 10;
+				for (int sampleIndex = 0; sampleIndex < singleChannelSize; sampleIndex += sampleWindow) {
 					
+					std::cout << sampleIndex << "/" << singleChannelSize << std::endl;
 					
-					std::vector< std::complex< double> >::const_iterator first = leftSamples.begin() + sampleIndex;
-					std::vector< std::complex< double> >::const_iterator last = leftSamples.begin() + (sampleIndex + sampleRate);
-					std::vector< std::complex< double> > leftSampleSample(first, last);
+					std::vector< std::complex< double> > leftSampleHannWindowed(sampleWindow);
+					
+					std::cout << "START" << std::endl;
+					for (int i = 0; i < sampleWindow; i++) {
+						std::complex< double> amplitudeHannWindowed = HannFunction(i, sampleWindow) * leftSamples[sampleIndex + i];
+						leftSampleHannWindowed.push_back(amplitudeHannWindowed);
+					}
+					std::cout << "END" << std::endl;
 
-					std::vector< std::complex< double> > leftSampleSample_FreqBin = FFT(leftSampleSample);
+					std::vector< std::complex< double> > leftSampleSample_FreqBin = FFT(leftSampleHannWindowed);
 					frequencyVisualizationVector.push_back(createFrequencyVisualizationVector(leftSampleSample_FreqBin));
 				}
 			}
@@ -92,6 +99,12 @@ class Audio {
 
 		}
 
+
+		std::complex< double> HannFunction(int n, int N) {
+			std::complex< double> hann = pow((sin((M_PI * n) / N)), 2);
+			return hann;
+
+		}
 
 		std::vector< std::complex< double> > FFT(std::vector< std::complex <double> > &samples) {
 			int N = samples.size();
@@ -130,10 +143,12 @@ class Audio {
 
 		}
 
+
+
 		std::vector<double> createFrequencyVisualizationVector(std::vector< std::complex< double> > complexVector) {
 			int samplingFrequency = complexVector.size();
 			std::vector< std::complex< double> >::const_iterator first = complexVector.begin();
-			std::vector< std::complex< double> >::const_iterator last = complexVector.begin() + (complexVector.size()/2);
+			std::vector< std::complex< double> >::const_iterator last = complexVector.begin() + (complexVector.size() / 2);
 			std::vector< std::complex< double> > complexVector_NyquistLimited(first, last);
 
 			std::vector<double> frequencyVisualizationVector(256);
@@ -164,15 +179,15 @@ class Audio {
 				magnitude_scaled_sum += magnitude_scaled;
 
 				// Two seperate bools for setting freq ranges to give priority to freq ranges below 1khz
-				bool addLowFreqRangeValue = ((frequency % 63) == 0);
+				bool addLowFreqRangeValue = ((frequency % 8) == 0);
 
 				// Sets the vector values to contain an average magnitude in a specific frequency range
 				if (frequency > 0) {
-					if (frequency <= 16128) {
+					if (frequency <= 2048) {
 						if (addLowFreqRangeValue) {
-							magnitude_scaled_avg = magnitude_scaled_sum / 63.0;
+							magnitude_scaled_avg = magnitude_scaled_sum / 8.0;
 							magnitude_scaled_sum = 0;
-							frequencyVisualizationVector[(frequency / 63) - 1] = magnitude_scaled_avg;
+							frequencyVisualizationVector[(frequency / 8) - 1] = magnitude_scaled_avg;
 						}
 					}
 				}

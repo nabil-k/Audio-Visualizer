@@ -25,9 +25,8 @@ int main() {
 
 		window.clear(sf::Color::Transparent);
 
-		if (audio.getfrequencyVisualizationVector().size() > 10) {
+		if (audio.getfrequencyVisualizationVector().size() > 120) {
 
-			
 			visualizer.update(audio.getfrequencyVisualizationVector());
 
 			std::vector<sf::RectangleShape> freqRangeRects = visualizer.getFreqRangeRects();

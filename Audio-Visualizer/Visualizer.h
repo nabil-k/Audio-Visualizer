@@ -6,7 +6,7 @@ class Visualizer {
 	sf::Clock clock;
 	int frequencyFrame = 0;
 	int animation_frame = 1;
-	int framesToReachMagnitude = 6; // the lower the faster the change
+	int framesToReachMagnitude = 16; // the lower the faster the change
 
 	public:
 		Visualizer() {
@@ -33,7 +33,6 @@ class Visualizer {
 
 
 			if (clock.getElapsedTime().asSeconds() > 0.1) {
-
 				frequencyFrame++;
 				clock.restart();
 				animation_frame = 1;

@@ -1,11 +1,11 @@
 ﻿  main.cpp
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(34): warning C4244: '=': conversion from 'sf::Uint64' to 'int', possible loss of data
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(50): warning C4018: '<': signed/unsigned mismatch
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(60): warning C4018: '<': signed/unsigned mismatch
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(134): warning C4018: '<': signed/unsigned mismatch
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\visualizer.h(19): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\visualizer.h(42): warning C4018: '<': signed/unsigned mismatch
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\visualizer.h(44): warning C4244: 'initializing': conversion from '_Ty' to 'float', possible loss of data
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(38): warning C4244: '=': conversion from 'sf::Uint64' to 'int', possible loss of data
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(59): warning C4018: '<': signed/unsigned mismatch
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(69): warning C4018: '<': signed/unsigned mismatch
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(158): warning C4018: '<': signed/unsigned mismatch
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\visualizer.h(19): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\visualizer.h(41): warning C4018: '<': signed/unsigned mismatch
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\visualizer.h(43): warning C4244: 'initializing': conversion from '_Ty' to 'float', possible loss of data
           with
           [
               _Ty=double
