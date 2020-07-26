@@ -78,24 +78,23 @@ class Audio {
 				clock.restart();
 				// Gets a sample from the audio channel to process, samples are the size of the sampleRate
 				int sampleWindow = sampleRate / 10;
-				for (int sampleIndex = 0; sampleIndex < singleChannelSize; sampleIndex += sampleWindow) {
+				for (int sampleIndex = 0; sampleIndex < singleChannelSize; sampleIndex += sampleWindow/2) {
 					
-					std::cout << sampleIndex << "/" << singleChannelSize << std::endl;
+					//std::cout << sampleIndex << "/" << singleChannelSize << std::endl;
 					
 					std::vector< std::complex< double> > leftSampleHannWindowed(sampleWindow);
 					
-					std::cout << "START" << std::endl;
 					for (int i = 0; i < sampleWindow; i++) {
 						std::complex< double> amplitudeHannWindowed = HannFunction(i, sampleWindow) * leftSamples[sampleIndex + i];
 						leftSampleHannWindowed.push_back(amplitudeHannWindowed);
 					}
-					std::cout << "END" << std::endl;
+					
 
 					std::vector< std::complex< double> > leftSampleSample_FreqBin = FFT(leftSampleHannWindowed);
 					frequencyVisualizationVector.push_back(createFrequencyVisualizationVector(leftSampleSample_FreqBin));
 				}
 			}
-			std::cout << clock.getElapsedTime().asSeconds() << " seconds" << std::endl;
+			std::cout << "SampleOverFrequency Runtime: " << clock.getElapsedTime().asSeconds() << " seconds" << std::endl;
 
 		}
 

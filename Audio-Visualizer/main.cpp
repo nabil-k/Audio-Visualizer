@@ -27,13 +27,13 @@ int main() {
 
 		if (audio.getfrequencyVisualizationVector().size() > 120) {
 
-			visualizer.update(audio.getfrequencyVisualizationVector());
+			//visualizer.update(audio.getfrequencyVisualizationVector());
 
-			std::vector<sf::RectangleShape> freqRangeRects = visualizer.getFreqRangeRects();
+			//std::vector<sf::RectangleShape> freqRangeRects = visualizer.getFreqRangeRects();
 
-			for (int i = 0; i < freqRangeRects.size(); i++) {
-				window.draw(freqRangeRects[i]);
-			}
+			//for (int i = 0; i < freqRangeRects.size(); i++) {
+				//window.draw(freqRangeRects[i]);
+			//}
 
 			if (!audio.songPlayed()) {
 				audio.playSong();
