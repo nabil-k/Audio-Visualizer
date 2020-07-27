@@ -5,8 +5,9 @@ class Visualizer {
 	std::vector<sf::RectangleShape> freqRangeRects;
 	sf::Clock clock;
 	int frequencyFrame = 0;
-	int animation_frame = 1;
-	int framesToReachMagnitude = 16; // the lower the faster the change
+	int animation_frame = 0;
+	int framesToReachMagnitude = 2; // the lower the faster the change
+	int frame = 0;
 
 	public:
 		Visualizer() {
@@ -31,19 +32,21 @@ class Visualizer {
 
 		void update(std::vector< std::vector <double> > frequencyVisualizationVector) {
 
-
-			if (clock.getElapsedTime().asSeconds() > 0.1) {
-				frequencyFrame++;
-				clock.restart();
-				animation_frame = 1;
+			if (frame % 60 == 0) {
+				frame = 0;
+			}
+			if (animation_frame == 2) {
+				animation_frame = 0;
+				frequencyFrame++;	
+				
 			}
 			else {
-				for (int rect_i = 0; rect_i < freqRangeRects.size(); rect_i++) {
-					float rectHeight = freqRangeRects[rect_i].getSize().y;
-					float newRectHeight = frequencyVisualizationVector[frequencyFrame][rect_i];
-					
-					// Makes the rect's height reach the magnitude of the rect's corresponding frequency
-					if (animation_frame < framesToReachMagnitude) {
+					for (int rect_i = 0; rect_i < freqRangeRects.size(); rect_i++) {
+						float rectHeight = freqRangeRects[rect_i].getSize().y;
+						float newRectHeight = frequencyVisualizationVector[frequencyFrame][rect_i];
+
+						// Makes the rect's height reach the magnitude of the rect's corresponding frequency
+						
 						if (abs(rectHeight) != newRectHeight) {
 							float rectHeight_velocity = ((newRectHeight - abs(rectHeight)) / framesToReachMagnitude) * -1.f;
 							float rectHeight_updated = freqRangeRects[rect_i].getSize().y + rectHeight_velocity;
@@ -64,15 +67,20 @@ class Visualizer {
 
 								}
 							}
-
+							
 							freqRangeRects[rect_i].setSize(sf::Vector2f(3.75, rectHeight_updated));
-
 						}
+
+						
 					}
+					
+					animation_frame++;
 
 				}
-			}
 			
-			animation_frame++;
+			frame++;
+
 		}
+
+			
 };
