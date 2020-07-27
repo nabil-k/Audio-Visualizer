@@ -13,7 +13,7 @@ class Visualizer {
 		Visualizer() {
 
 			// Creates Rects for freq visualization
-			for (int ranges = 0; ranges < 256; ranges++) {
+			for (int ranges = 0; ranges < 64; ranges++) {
 				sf::RectangleShape freqRangeRect = sf::RectangleShape();
 
 				freqRangeRect.setSize(sf::Vector2f(3.75, 0));
@@ -32,53 +32,50 @@ class Visualizer {
 
 		void update(std::vector< std::vector <double> > frequencyVisualizationVector) {
 
-			if (frame % 60 == 0) {
-				frame = 0;
-			}
 			if (animation_frame == 2) {
 				animation_frame = 0;
-				frequencyFrame++;	
+				frequencyFrame++;
+
+				std::cout << frequencyFrame << "/" << frequencyVisualizationVector.size() << std::endl;
 				
 			}
 			else {
-					for (int rect_i = 0; rect_i < freqRangeRects.size(); rect_i++) {
-						float rectHeight = freqRangeRects[rect_i].getSize().y;
-						float newRectHeight = frequencyVisualizationVector[frequencyFrame][rect_i];
+				for (int rect_i = 0; rect_i < freqRangeRects.size(); rect_i++) {
+					float rectHeight = freqRangeRects[rect_i].getSize().y;
+					float newRectHeight = frequencyVisualizationVector[frequencyFrame][rect_i];
 
-						// Makes the rect's height reach the magnitude of the rect's corresponding frequency
-						
-						if (abs(rectHeight) != newRectHeight) {
-							float rectHeight_velocity = ((newRectHeight - abs(rectHeight)) / framesToReachMagnitude) * -1.f;
-							float rectHeight_updated = freqRangeRects[rect_i].getSize().y + rectHeight_velocity;
+					// Makes the rect's height reach the magnitude of the rect's corresponding frequency
+					if (abs(rectHeight) != newRectHeight) {
+						float rectHeight_velocity = ((newRectHeight - abs(rectHeight)) / framesToReachMagnitude) * -1.f;
+						float rectHeight_updated = freqRangeRects[rect_i].getSize().y + rectHeight_velocity;
 
-							// Checks if rect height is going UP
-							if (rectHeight_velocity < 0) {
-								if (abs(rectHeight_updated) > newRectHeight) {
+						// Checks if rect height is going UP
+						if (rectHeight_velocity < 0) {
+							if (abs(rectHeight_updated) > newRectHeight) {
 
-									rectHeight_updated = newRectHeight * -1.f;
+								rectHeight_updated = newRectHeight * -1.f;
 
-								}
 							}
-							//Checks if rect height is going DOWN
-							else if (rectHeight_velocity > 0) {
-								if (abs(rectHeight_updated) < newRectHeight) {
-
-									rectHeight_updated = newRectHeight * -1.f;
-
-								}
-							}
-							
-							freqRangeRects[rect_i].setSize(sf::Vector2f(3.75, rectHeight_updated));
 						}
+						//Checks if rect height is going DOWN
+						else if (rectHeight_velocity > 0) {
+							if (abs(rectHeight_updated) < newRectHeight) {
+
+								rectHeight_updated = newRectHeight * -1.f;
+
+							}
+						}
+							
+						freqRangeRects[rect_i].setSize(sf::Vector2f(3.75, rectHeight_updated));
+					}
 
 						
-					}
-					
-					animation_frame++;
-
 				}
+					
+				animation_frame++;
+
+			}
 			
-			frame++;
 
 		}
 

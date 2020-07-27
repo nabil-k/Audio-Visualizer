@@ -40,7 +40,6 @@ int main() {
 				audio.playSong();
 			}
 
-			audio.printSongPlayingOffset();
 
 		}
 

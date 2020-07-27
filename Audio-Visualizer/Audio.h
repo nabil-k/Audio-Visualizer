@@ -87,12 +87,11 @@ class Audio {
 				clock.restart();
 				// Gets a sample from the audio channel to process, samples are the size of the sampleRate
 				int sampleWindow = sampleRate / 30;
+				
 				int windows_averageOverlapReady_count = 0;
 				for (int sampleIndex = 0; sampleIndex < singleChannelSize; sampleIndex += sampleWindow/2) {
-					std::cout << sampleIndex << "/" << singleChannelSize << std::endl;
 					
-					
-					std::vector< std::complex< double> > leftSampleHannWindowed(sampleWindow);
+					std::vector< std::complex< double> > leftSampleHannWindowed;
 					
 					for (int i = 0; i < sampleWindow; i++) {
 						std::complex< double> amplitudeHannWindowed = HannFunction(i, sampleWindow) * leftSamples[sampleIndex + i];
@@ -100,7 +99,6 @@ class Audio {
 					}
 					
 					std::vector< std::complex< double> > leftSampleSample_FreqBin = FFT(leftSampleHannWindowed);
-
 					frequencyWindowMagnitudes.push_back(FFT_Magnitude(leftSampleSample_FreqBin));
 
 					windows_averageOverlapReady_count++;
@@ -169,14 +167,15 @@ class Audio {
 		// Calculates the magnitude from freq bins
 		std::vector<double> FFT_Magnitude(std::vector< std::complex< double> > complexVector) {
 			int samplingFrequency = complexVector.size();
+		
 			std::vector< std::complex< double> >::const_iterator first = complexVector.begin();
 			std::vector< std::complex< double> >::const_iterator last = complexVector.begin() + (complexVector.size() / 2);
 			std::vector< std::complex< double> > complexVector_NyquistLimited(first, last);
 
-			std::vector<double> frequencyMagnitude(256);
+			std::vector<double> frequencyMagnitude(64);
 			
 			double magnitude_sum = 0;
-
+			
 			for (int frequency = 0; frequency < complexVector_NyquistLimited.size(); frequency++) {
 				
 				double magnitude_scaled;
@@ -194,15 +193,16 @@ class Audio {
 				magnitude_sum += magnitude;
 
 				// Two seperate bools for setting freq ranges to give priority to freq ranges below 1khz
-				bool addLowFreqRangeValue = ((frequency % 5) == 0);
+				bool addLowFreqRangeValue = ((frequency % 11) == 0);
 
 				// Sets the vector values to contain an average magnitude in a specific frequency range
 				if (frequency > 0) {
-					if (frequency <= 1280) {
+					if (frequency <= 704) {
 						if (addLowFreqRangeValue) {
-							magnitude_scaled_avg = magnitude_sum / 5.0;
+							magnitude_scaled_avg = magnitude_sum / 11.0;
 							magnitude_sum = 0;
-							frequencyMagnitude[(frequency / 5) - 1] = magnitude_scaled_avg;
+							frequencyMagnitude[(frequency / 11) - 1] = magnitude_scaled_avg;
+							
 						}
 					}
 				}
@@ -240,7 +240,7 @@ class Audio {
 				
 		}
 
-		std::vector< std::vector <double> > getfrequencyVisualizationVector() {
+		std::vector< std::vector <double> >& getfrequencyVisualizationVector() {
 			return frequencyVisualizationVector;
 		}
 
