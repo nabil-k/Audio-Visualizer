@@ -201,15 +201,15 @@ class Audio {
 				magnitude_sum += magnitude;
 
 				// Two seperate bools for setting freq ranges to give priority to freq ranges below 1khz
-				bool addLowFreqRangeValue = ((frequency % 11) == 0);
+				bool addLowFreqRangeValue = ((frequency % 5) == 0);
 
 				// Sets the vector values to contain an average magnitude in a specific frequency range
 				if (frequency > 0) {
-					if (frequency <= 704) {
+					if (frequency <= 320) {
 						if (addLowFreqRangeValue) {
-							magnitude_scaled_avg = magnitude_sum / 11.0;
+							magnitude_scaled_avg = magnitude_sum / 5.0;
 							magnitude_sum = 0;
-							frequencyMagnitude[(frequency / 11) - 1] = magnitude_scaled_avg;
+							frequencyMagnitude[(frequency / 5) - 1] = magnitude_scaled_avg;
 							
 						}
 					}
