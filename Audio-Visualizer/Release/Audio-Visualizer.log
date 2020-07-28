@@ -2,21 +2,21 @@
 c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(42): warning C4244: '=': conversion from 'sf::Uint64' to 'int', possible loss of data
 c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(69): warning C4018: '<': signed/unsigned mismatch
 c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(79): warning C4018: '<': signed/unsigned mismatch
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(179): warning C4018: '<': signed/unsigned mismatch
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(181): warning C4101: 'magnitude_scaled': unreferenced local variable
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(227): warning C4018: '<': signed/unsigned mismatch
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(233): warning C4018: '<': signed/unsigned mismatch
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(202): warning C4018: '<': signed/unsigned mismatch
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(204): warning C4101: 'magnitude_scaled': unreferenced local variable
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(250): warning C4018: '<': signed/unsigned mismatch
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(256): warning C4018: '<': signed/unsigned mismatch
 c:\users\duoma\desktop\audio-visualizer\audio-visualizer\visualizer.h(20): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\visualizer.h(43): warning C4018: '<': signed/unsigned mismatch
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\visualizer.h(45): warning C4244: 'initializing': conversion from '_Ty' to 'float', possible loss of data
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\visualizer.h(37): warning C4018: '<': signed/unsigned mismatch
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\visualizer.h(39): warning C4244: 'initializing': conversion from '_Ty' to 'float', possible loss of data
           with
           [
               _Ty=double
           ]
 c:\users\duoma\desktop\audio-visualizer\audio-visualizer\main.cpp(35): warning C4018: '<': signed/unsigned mismatch
   Generating code
-  12 of 535 functions ( 2.2%) were compiled, the rest were copied from previous compilation.
-    1 functions were new in current compilation
-    5 functions had inline decision re-evaluated but remain unchanged
+  2 of 536 functions ( 0.4%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    6 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   Audio-Visualizer.vcxproj -> C:\Users\duoma\Desktop\Audio-Visualizer\Release\Audio-Visualizer.exe

@@ -7,7 +7,7 @@
 int main() {
 	
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "Audio-Visualizer");
-	window.setFramerateLimit(60);
+	window.setFramerateLimit(30);
 
 	Audio audio = Audio();
 	std::thread frequencyAnalyzationThread(&Audio::getSampleOverFrequency, &audio);
@@ -27,8 +27,8 @@ int main() {
 		window.clear(sf::Color::Transparent);
 
 		if (audio.getfrequencyVisualizationVector().size() > 120) {
-
-			visualizer.update(audio.getfrequencyVisualizationVector());
+			
+			visualizer.update(audio.getfrequencyVisualizationVector(), audio.getSongPlayingOffset());
 
 			std::vector<sf::RectangleShape> freqRangeRects = visualizer.getFreqRangeRects();
 

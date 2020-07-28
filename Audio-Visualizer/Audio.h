@@ -51,8 +51,8 @@ class Audio {
 			playedSong = true;
 		}
 
-		void printSongPlayingOffset() {
-			//std::cout << song.getPlayingOffset().asSeconds() << std::endl;
+		double getSongPlayingOffset() {
+			return song.getPlayingOffset().asSeconds();
 		}
 
 		bool songPlayed() {
@@ -88,29 +88,52 @@ class Audio {
 				// Gets a sample from the audio channel to process, samples are the size of the sampleRate
 				int sampleWindow = sampleRate / 30;
 				
+				std::cout << singleChannelSize / (sampleWindow) << std::endl;
 				int windows_averageOverlapReady_count = 0;
+				
 				for (int sampleIndex = 0; sampleIndex < singleChannelSize; sampleIndex += sampleWindow/2) {
-					
+					windows_averageOverlapReady_count++;
 					std::vector< std::complex< double> > leftSampleHannWindowed;
-					
+
+					//std::cout << "Batch: " << std::endl;
 					for (int i = 0; i < sampleWindow; i++) {
-						std::complex< double> amplitudeHannWindowed = HannFunction(i, sampleWindow) * leftSamples[sampleIndex + i];
+						//if (i == 0) {
+							//std::cout << "\t" << sampleIndex + i << std::endl;
+						//}
+						//else if (i == sampleWindow - 1) {
+							//std::cout << "\t" << sampleIndex + i << std::endl;
+						//}
+						std::complex< double > amplitudeHannWindowed = HannFunction(i, sampleWindow) * leftSamples[sampleIndex + i];
 						leftSampleHannWindowed.push_back(amplitudeHannWindowed);
+			
+						if (i == sampleWindow - 1) {
+							if (windows_averageOverlapReady_count == 3) {
+								sampleIndex = (sampleIndex + i) - (sampleWindow / 2);
+							}
+						}
 					}
 					
 					std::vector< std::complex< double> > leftSampleSample_FreqBin = FFT(leftSampleHannWindowed);
 					frequencyWindowMagnitudes.push_back(FFT_Magnitude(leftSampleSample_FreqBin));
 
-					windows_averageOverlapReady_count++;
+					
 					
 					if (windows_averageOverlapReady_count == 3) {
+						//std::cout << "frequencyWindowMagnitudes: " << frequencyWindowMagnitudes.size() << std::endl;
+						//std::cout << "frequencyVisualizationVector: " << frequencyVisualizationVector.size() << std::endl;
+						//std::cout << "Adding 2..." << std::endl;
 						averageOverlapWindows(frequencyWindowMagnitudes);
+
 						frequencyWindowMagnitudes.clear();
 						windows_averageOverlapReady_count = 0;
+						//std::cout << "frequencyVisualizationVector: " << frequencyVisualizationVector.size() << std::endl;
+						//std::cout << "frequencyWindowMagnitudes: " << frequencyWindowMagnitudes.size() << std::endl;
 					}	
 
 				}
 				std::cout << "SampleOverFrequency Runtime: " << clock.getElapsedTime().asSeconds() << " seconds" << std::endl;
+				std::cout << "frequencyVisualizationVector: " << frequencyVisualizationVector.size() << std::endl;
+				
 			}
 			
 
@@ -234,6 +257,7 @@ class Audio {
 				double avgFreq = (thirdWindow[freq] + secondWindow[freq]) / 2;
 				thirdWindow[freq] = avgFreq;
 			}
+
 				
 			frequencyVisualizationVector.push_back(firstWindow);
 			frequencyVisualizationVector.push_back(thirdWindow);
