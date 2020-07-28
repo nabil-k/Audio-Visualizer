@@ -5,7 +5,6 @@ class Audio {
 	
 	std::string audioFilePath = "./audio/Rival x Cadmium - Seasons (feat. Harley Bird) [NCS Release].wav";
 	
-	//std::string audioFilePath = "./audio/test4.wav";
 	sf::Clock clock;
 	sf::Clock clock2;
 	const sf::Int16* samples;
@@ -86,7 +85,7 @@ class Audio {
 			if (splitAudioChannel()) {
 				clock.restart();
 				// Gets a sample from the audio channel to process, samples are the size of the sampleRate
-				int sampleWindow = sampleRate / 30;
+				int sampleWindow = sampleRate / 60;
 				
 				std::cout << singleChannelSize / (sampleWindow) << std::endl;
 				int windows_averageOverlapReady_count = 0;
@@ -95,14 +94,7 @@ class Audio {
 					windows_averageOverlapReady_count++;
 					std::vector< std::complex< double> > leftSampleHannWindowed;
 
-					//std::cout << "Batch: " << std::endl;
 					for (int i = 0; i < sampleWindow; i++) {
-						//if (i == 0) {
-							//std::cout << "\t" << sampleIndex + i << std::endl;
-						//}
-						//else if (i == sampleWindow - 1) {
-							//std::cout << "\t" << sampleIndex + i << std::endl;
-						//}
 						std::complex< double > amplitudeHannWindowed = HannFunction(i, sampleWindow) * leftSamples[sampleIndex + i];
 						leftSampleHannWindowed.push_back(amplitudeHannWindowed);
 			
@@ -119,20 +111,13 @@ class Audio {
 					
 					
 					if (windows_averageOverlapReady_count == 3) {
-						//std::cout << "frequencyWindowMagnitudes: " << frequencyWindowMagnitudes.size() << std::endl;
-						//std::cout << "frequencyVisualizationVector: " << frequencyVisualizationVector.size() << std::endl;
-						//std::cout << "Adding 2..." << std::endl;
 						averageOverlapWindows(frequencyWindowMagnitudes);
-
 						frequencyWindowMagnitudes.clear();
 						windows_averageOverlapReady_count = 0;
-						//std::cout << "frequencyVisualizationVector: " << frequencyVisualizationVector.size() << std::endl;
-						//std::cout << "frequencyWindowMagnitudes: " << frequencyWindowMagnitudes.size() << std::endl;
 					}	
 
 				}
 				std::cout << "SampleOverFrequency Runtime: " << clock.getElapsedTime().asSeconds() << " seconds" << std::endl;
-				std::cout << "frequencyVisualizationVector: " << frequencyVisualizationVector.size() << std::endl;
 				
 			}
 			

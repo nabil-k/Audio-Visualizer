@@ -7,7 +7,7 @@
 int main() {
 	
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "Audio-Visualizer");
-	window.setFramerateLimit(30);
+	window.setFramerateLimit(60);
 
 	Audio audio = Audio();
 	std::thread frequencyAnalyzationThread(&Audio::getSampleOverFrequency, &audio);
