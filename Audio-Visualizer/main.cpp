@@ -5,8 +5,10 @@
 
 
 int main() {
-	
-	sf::RenderWindow window(sf::VideoMode(1280, 720), "Audio-Visualizer");
+	sf::ContextSettings settings;
+	settings.antialiasingLevel = 8;
+
+	sf::RenderWindow window(sf::VideoMode(1280, 720), "Audio-Visualizer", sf::Style::Default, settings);
 	window.setFramerateLimit(60);
 
 	Audio audio = Audio();
@@ -24,23 +26,31 @@ int main() {
 		}
 
 
-		window.clear(sf::Color::Red);
+		window.clear(sf::Color::Black);
 
 		if (audio.getfrequencyVisualizationVector().size() > 120) {
 			
 			visualizer.update(audio.getfrequencyVisualizationVector(), audio.getSongPlayingOffset());
 
-			sf::VertexArray freqCircleVertices = visualizer.getFreqCircleVertices();
-			//std::cout << freqCircleVertices[32].position.y << std::endl;
+			std::vector<sf::RectangleShape> freqRangeRects = visualizer.getFreqRangeRects();
 
-			window.draw(freqCircleVertices);
+			window.draw(visualizer.getAmplitudeCircle());
+			
+			for (int i = 0; i < freqRangeRects.size(); i++) {
+				window.draw(freqRangeRects[i]);
+			}
+			
 			
 
 			if (!audio.songPlayed()) {
 				audio.playSong();
 			}
 
-
+		}
+		else {
+			if (audio.getfrequencyVisualizationVector().size() > 1) {
+				visualizer.setLeftSamples(audio.getLeftSamples());
+			}
 		}
 
 

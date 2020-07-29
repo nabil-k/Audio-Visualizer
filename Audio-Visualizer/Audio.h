@@ -74,10 +74,8 @@ class Audio {
 			return true;
 		}
 
-		void outputsampleOverFrequencyVector(std::vector<double> vector){
-			for (int i = 0; i < vector.size(); ++i) {
-				std::cout << i << " " << vector[i] << std::endl;
-			}
+		std::vector< std::complex <double> > getLeftSamples(){
+			return leftSamples;
 		}
 
 		// Creates frequency ranges for the audio samples
@@ -197,8 +195,8 @@ class Audio {
 				if (magnitude == 0.0) {
 					magnitude = 1;
 				}
-				else if (magnitude > 500.0) {
-					magnitude = 500.0;
+				else if (magnitude > 200.0) {
+					magnitude = 200.0;
 				}
 
 				magnitude_sum += magnitude;
@@ -245,7 +243,6 @@ class Audio {
 				double avgFreq = (thirdWindow[freq] + secondWindow[freq]) / 2;
 				thirdWindow[freq] = avgFreq;
 			}
-
 				
 			frequencyVisualizationVector.push_back(firstWindow);
 			frequencyVisualizationVector.push_back(thirdWindow);
