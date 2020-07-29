@@ -2,66 +2,124 @@
 #include "main.h"
 
 class Visualizer {
-	std::vector<sf::RectangleShape> freqRangeRects;
+	
 	sf::Clock clock;
 	int frequencyFrame = 0;
+	sf::VertexArray freqCircleVertices;
+	float freqCircle_x = 640; // x coord of the center
+	float freqCircle_y = 360; // y coord of the center
+	float freqCircle_radius_squared = 10000;
+
 
 	public:
 		Visualizer() {
+			
+			freqCircleVertices = sf::VertexArray(sf::LineStrip);
+			float lastX;
+			float freqCircle_first_endpoint = freqCircle_x - sqrt(freqCircle_radius_squared); // first endpoint of semi circle
+			float freqCircle_second_endpoint = freqCircle_x + sqrt(freqCircle_radius_squared); // second endpoint of semi circle
+			// Constructs the circle that displays frequencies over time
+			for (int ranges = 1; ranges <= 64; ranges++) {
+				float x;
+				float y;
 
-			// Creates Rects for freq visualization
-			for (int ranges = 0; ranges < 64; ranges++) {
-				sf::RectangleShape freqRangeRect = sf::RectangleShape();
+				if (ranges <= 32) {
 
-				freqRangeRect.setSize(sf::Vector2f(15, 0));
-				freqRangeRect.setPosition(32 + (16 * ranges), 460);
-				freqRangeRect.setFillColor(sf::Color::White);
-				freqRangeRect.setOutlineColor(sf::Color::Black);
-				freqRangeRect.setOutlineThickness(1.f);
+					if (ranges % 32 == 0) {
+						x = freqCircle_second_endpoint;
+					}
+					else {
+						x = freqCircle_first_endpoint + (ranges % 32 * 6.25);
+					}
+					
+					y = sqrt((freqCircle_radius_squared - pow((x - freqCircle_x), 2))) + freqCircle_y;
+					lastX = x;
 
-				freqRangeRects.push_back(freqRangeRect);
+				}
+				else {
+					
+					if (ranges % 32 == 0) {
+						x = freqCircle_first_endpoint;
+					}
+					else {
+						x = freqCircle_second_endpoint - (ranges % 32 * 6.25);
+					}
+					
+					y = -sqrt((freqCircle_radius_squared - pow((x - freqCircle_x), 2))) + freqCircle_y;
+
+				}
+				
+				freqCircleVertices.append(sf::Vector2f(x, y));
+
 			}
+
+			freqCircleVertices.append(sf::Vector2f(freqCircleVertices[0].position.x, freqCircleVertices[0].position.y));
 		}
 
-		std::vector<sf::RectangleShape>& getFreqRangeRects() {
-			return freqRangeRects;
+		sf::VertexArray& getFreqCircleVertices() {
+			return freqCircleVertices;
 		}
 
 		void update(std::vector< std::vector <double> >& frequencyVisualizationVector, double songPlayingOffset) {
 			
-			frequencyFrame = (int)(songPlayingOffset * 60);
+			frequencyFrame = (int)(songPlayingOffset * 30);
+			
+			float lastX;
+			freqCircleVertices.clear();
 
-			for (int rect_i = 0; rect_i < freqRangeRects.size(); rect_i++) {
-				float rectHeight = freqRangeRects[rect_i].getSize().y;
-				float newRectHeight = frequencyVisualizationVector[frequencyFrame][rect_i];
+			for (int ranges = 1; ranges <= 64; ranges++) {
 
-				// Makes the rect's height reach the magnitude of the rect's corresponding frequency
-				if (abs(rectHeight) != newRectHeight) {
-					float rectHeight_velocity = ((newRectHeight - abs(rectHeight))) * -1.f;
-					float rectHeight_updated = freqRangeRects[rect_i].getSize().y + rectHeight_velocity;
+				float radiusChange = pow(frequencyVisualizationVector[frequencyFrame][ranges - 1], 2);
+				float freqCircle_first_endpoint = freqCircle_x - sqrt(freqCircle_radius_squared + radiusChange); // first endpoint of semi circle
+				float freqCircle_second_endpoint = freqCircle_x + sqrt(freqCircle_radius_squared + radiusChange); // second endpoint of semi circle
+				float x;
+				float y;
 
-					// Checks if rect height is going UP
-					if (rectHeight_velocity < 0) {
-						if (abs(rectHeight_updated) > newRectHeight) {
+				if (ranges <= 32) {
 
-							rectHeight_updated = newRectHeight * -1.f;
-
-						}
+					if (ranges % 32 == 0) {
+						x = freqCircle_second_endpoint;
+						y = sqrt( (freqCircle_radius_squared + radiusChange - pow((x - freqCircle_x), 2)) ) + freqCircle_y;
 					}
-					//Checks if rect height is going DOWN
-					else if (rectHeight_velocity > 0) {
-						if (abs(rectHeight_updated) < newRectHeight) {
+					else {
+						x = freqCircle_first_endpoint + (ranges % 32 * 6.25);
+						y = sqrt((freqCircle_radius_squared + radiusChange - pow((x - freqCircle_x), 2))) + freqCircle_y;
+					}
 
-							rectHeight_updated = newRectHeight * -1.f;
+					
+					lastX = x;
 
-						}
-					}	
-					freqRangeRects[rect_i].setSize(sf::Vector2f(15, rectHeight_updated));
+
+					if (ranges % 32 == 0) {
+						std::cout << "freqCircle_second_endpoint " << freqCircle_second_endpoint << std::endl;
+
+						std::cout << (freqCircle_radius_squared + radiusChange - pow((x - freqCircle_x), 2)) << std::endl;
+						std::cout << x << "," << y << std::endl;
+					}
+
 				}
-						
+				else {
+
+					if (ranges % 32 == 0) {
+						x = freqCircle_first_endpoint;
+					}
+					else {
+						x = freqCircle_second_endpoint - (ranges % 32 * 6.25);
+					}
+
+					y = -sqrt((freqCircle_radius_squared + radiusChange - pow((x - freqCircle_x), 2))) + freqCircle_y;
+
+					if (ranges % 32 == 0) {
+						//std::cout << x << "," << y << std::endl;
+					}
+
+				}
+				freqCircleVertices.append(sf::Vector2f(x, y));
+
 			}
+
+			freqCircleVertices.append(sf::Vector2f(freqCircleVertices[0].position.x, freqCircleVertices[0].position.y));
 				
-			frequencyFrame++;
 
 		}
 

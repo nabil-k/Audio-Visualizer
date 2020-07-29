@@ -85,7 +85,7 @@ class Audio {
 			if (splitAudioChannel()) {
 				clock.restart();
 				// Gets a sample from the audio channel to process, samples are the size of the sampleRate
-				int sampleWindow = sampleRate / 60;
+				int sampleWindow = sampleRate / 30;
 				
 				std::cout << singleChannelSize / (sampleWindow) << std::endl;
 				int windows_averageOverlapReady_count = 0;
@@ -194,22 +194,25 @@ class Audio {
 				double imag = complexVector[frequency].imag() * 2 / samplingFrequency;
 				double magnitude = sqrt(pow(real,2) + pow(imag, 2));
 				
-				if (magnitude > 500.0) {
-					magnitude = 0;
+				if (magnitude == 0.0) {
+					magnitude = 1;
+				}
+				else if (magnitude > 500.0) {
+					magnitude = 500.0;
 				}
 
 				magnitude_sum += magnitude;
 
 				// Two seperate bools for setting freq ranges to give priority to freq ranges below 1khz
-				bool addLowFreqRangeValue = ((frequency % 5) == 0);
+				bool addLowFreqRangeValue = ((frequency % 11) == 0);
 
 				// Sets the vector values to contain an average magnitude in a specific frequency range
 				if (frequency > 0) {
-					if (frequency <= 320) {
+					if (frequency <= 704) {
 						if (addLowFreqRangeValue) {
-							magnitude_scaled_avg = magnitude_sum / 5.0;
+							magnitude_scaled_avg = magnitude_sum / 11.0;
 							magnitude_sum = 0;
-							frequencyMagnitude[(frequency / 5) - 1] = magnitude_scaled_avg;
+							frequencyMagnitude[(frequency / 11) - 1] = magnitude_scaled_avg;
 							
 						}
 					}

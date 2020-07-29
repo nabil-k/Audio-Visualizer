@@ -24,17 +24,17 @@ int main() {
 		}
 
 
-		window.clear(sf::Color::Transparent);
+		window.clear(sf::Color::Red);
 
 		if (audio.getfrequencyVisualizationVector().size() > 120) {
 			
 			visualizer.update(audio.getfrequencyVisualizationVector(), audio.getSongPlayingOffset());
 
-			std::vector<sf::RectangleShape> freqRangeRects = visualizer.getFreqRangeRects();
+			sf::VertexArray freqCircleVertices = visualizer.getFreqCircleVertices();
+			//std::cout << freqCircleVertices[32].position.y << std::endl;
 
-			for (int i = 0; i < freqRangeRects.size(); i++) {
-				window.draw(freqRangeRects[i]);
-			}
+			window.draw(freqCircleVertices);
+			
 
 			if (!audio.songPlayed()) {
 				audio.playSong();
