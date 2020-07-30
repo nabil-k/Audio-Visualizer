@@ -7,5 +7,7 @@
 #include <cmath>
 #include <math.h>
 #include <thread>
+#include <algorithm> 
+#include <ctime>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>

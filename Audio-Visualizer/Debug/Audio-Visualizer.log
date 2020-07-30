@@ -1,18 +1,1 @@
-﻿  main.cpp
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(41): warning C4244: '=': conversion from 'sf::Uint64' to 'int', possible loss of data
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(68): warning C4018: '<': signed/unsigned mismatch
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(78): warning C4018: '<': signed/unsigned mismatch
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(187): warning C4018: '<': signed/unsigned mismatch
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(189): warning C4101: 'magnitude_scaled': unreferenced local variable
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(238): warning C4018: '<': signed/unsigned mismatch
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(244): warning C4018: '<': signed/unsigned mismatch
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(249): warning C4018: '<': signed/unsigned mismatch
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\visualizer.h(20): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\visualizer.h(39): warning C4018: '<': signed/unsigned mismatch
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\visualizer.h(41): warning C4244: 'initializing': conversion from '_Ty' to 'float', possible loss of data
-          with
-          [
-              _Ty=double
-          ]
-c:\users\duoma\desktop\audio-visualizer\audio-visualizer\main.cpp(35): warning C4018: '<': signed/unsigned mismatch
-  Audio-Visualizer.vcxproj -> C:\Users\duoma\Desktop\Audio-Visualizer\Debug\Audio-Visualizer.exe
+﻿  Audio-Visualizer.vcxproj -> C:\Users\duoma\Desktop\Audio-Visualizer\Debug\Audio-Visualizer.exe

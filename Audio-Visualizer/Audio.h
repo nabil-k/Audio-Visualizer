@@ -1,26 +1,25 @@
 #pragma once
-#include "main.h"
 
 class Audio {
 	
 	std::string audioFilePath = "./audio/Rival x Cadmium - Seasons (feat. Harley Bird) [NCS Release].wav";
 	
 	sf::Clock clock;
-	sf::Clock clock2;
 	const sf::Int16* samples;
-	unsigned int sampleRate;
 	sf::Uint64 sampleSize;
+	unsigned int sampleRate;
 	int singleChannelSize;
-	float timeElapsed = 0;
+
 	bool playedSong = false;
+	bool audioChannelSplit = false;
 	
 	std::vector< std::complex <double> > leftSamples;
 	std::vector<double> sampleFrequencyRanges;
 	std::vector< std::vector <double> > frequencyWindowMagnitudes;
 	std::vector< std::vector <double> > frequencyVisualizationVector;
+	std::vector< double > amplitudeVisualizationVector;
 	
 	sf::SoundBuffer buffer;
-
 	sf::Sound song;
 
 
@@ -43,30 +42,37 @@ class Audio {
 
 		}
 
-		void playSong() {
-
-			song.play();
-			
-			playedSong = true;
-		}
-
-		double getSongPlayingOffset() {
-			return song.getPlayingOffset().asSeconds();
-		}
-
-		bool songPlayed() {
-			return playedSong;
-		}
-
 		bool splitAudioChannel() {
+
 			// Sample arrays for left channel
 			leftSamples.resize(singleChannelSize + sampleRate);
+
 			for (int i = 0; i < singleChannelSize; ++i) {
 				leftSamples[i] = samples[2 * i];
 			}
+
 			// Padding data to audio channel
 			for (int i = singleChannelSize; i < leftSamples.size(); ++i) {
 				leftSamples[i] = 0;
+			}
+
+			// Finds the maximum amplitude in 1/30th of a second in the song
+			for (int i = 0; i < leftSamples.size() - 1470; i += 1470) {
+				double max = 0;
+				for (int t = 0; t < 1470; t++) {
+					double amplitude = leftSamples[i + t].real();
+					if (amplitude >= 0) {
+						if (amplitude > max) {
+							max = (int)amplitude / 100;
+						}
+					}
+				}
+
+				if (max > 20) {
+					max = 20;
+				}
+
+				amplitudeVisualizationVector.push_back(max);
 			}
 
 			std::cout << "Finished splitting audio channels" << std::endl;
@@ -74,18 +80,41 @@ class Audio {
 			return true;
 		}
 
-		std::vector< std::complex <double> > getLeftSamples(){
-			return leftSamples;
+		void playSong() {
+
+			song.play();
+			
+			playedSong = true;
 		}
+
+		bool songPlayed() {
+			return playedSong;
+		}
+
+		double getSongPlayingOffset() {
+			return song.getPlayingOffset().asSeconds();
+		}
+
+		std::vector< std::vector <double> >& getfrequencyVisualizationVector() {
+			return frequencyVisualizationVector;
+		}
+
+		std::vector<double>& getAmplitudeVisualizationVector() {
+			return amplitudeVisualizationVector;
+		}
+
 
 		// Creates frequency ranges for the audio samples
 		void getSampleOverFrequency() {
-			if (splitAudioChannel()) {
+
+			audioChannelSplit = splitAudioChannel();
+
+			if (audioChannelSplit) {
+
 				clock.restart();
+
 				// Gets a sample from the audio channel to process, samples are the size of the sampleRate
 				int sampleWindow = sampleRate / 30;
-				
-				std::cout << singleChannelSize / (sampleWindow) << std::endl;
 				int windows_averageOverlapReady_count = 0;
 				
 				for (int sampleIndex = 0; sampleIndex < singleChannelSize; sampleIndex += sampleWindow/2) {
@@ -106,8 +135,6 @@ class Audio {
 					std::vector< std::complex< double> > leftSampleSample_FreqBin = FFT(leftSampleHannWindowed);
 					frequencyWindowMagnitudes.push_back(FFT_Magnitude(leftSampleSample_FreqBin));
 
-					
-					
 					if (windows_averageOverlapReady_count == 3) {
 						averageOverlapWindows(frequencyWindowMagnitudes);
 						frequencyWindowMagnitudes.clear();
@@ -117,18 +144,15 @@ class Audio {
 				}
 				std::cout << "SampleOverFrequency Runtime: " << clock.getElapsedTime().asSeconds() << " seconds" << std::endl;
 				
-			}
-			
-
-			
+			}	
 
 		}
 
 
+		// Windowing function
 		std::complex< double> HannFunction(int n, int N) {
 			std::complex< double> hann = pow((sin((M_PI * n) / N)), 2);
 			return hann;
-
 		}
 
 		// Cool-Turkey FFT algorithim
@@ -249,9 +273,6 @@ class Audio {
 				
 		}
 
-		std::vector< std::vector <double> >& getfrequencyVisualizationVector() {
-			return frequencyVisualizationVector;
-		}
 
 
 };
