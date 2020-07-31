@@ -2,7 +2,7 @@
 
 class Audio {
 	
-	std::string audioFilePath = "./audio/Rival x Cadmium - Seasons (feat. Harley Bird) [NCS Release].wav";
+	std::string audioFilePath = "./audio/LIGHTS - Slow Down (WRLD Remix).wav";
 	
 	sf::Clock clock;
 	const sf::Int16* samples;
@@ -31,7 +31,6 @@ class Audio {
 				std::cout << "Couldn't load buffer" << std::endl;
 			}
 			else {
-
 				song.setBuffer(buffer);
 				sampleRate = buffer.getSampleRate();
 				// Original sample (unsplit: the samples holding the left and right channels)

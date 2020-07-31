@@ -1,1 +1,21 @@
-﻿  Audio-Visualizer.vcxproj -> C:\Users\duoma\Desktop\Audio-Visualizer\Debug\Audio-Visualizer.exe
+﻿  main.cpp
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(40): warning C4244: '=': conversion from 'sf::Uint64' to 'int', possible loss of data
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(55): warning C4018: '<': signed/unsigned mismatch
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(60): warning C4018: '<': signed/unsigned mismatch
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(209): warning C4018: '<': signed/unsigned mismatch
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(211): warning C4101: 'magnitude_scaled': unreferenced local variable
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(260): warning C4018: '<': signed/unsigned mismatch
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\audio.h(266): warning C4018: '<': signed/unsigned mismatch
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\visualizer.h(64): warning C4018: '<': signed/unsigned mismatch
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\visualizer.h(67): warning C4018: '<': signed/unsigned mismatch
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\visualizer.h(68): warning C4244: '=': conversion from '_Ty' to 'float', possible loss of data
+          with
+          [
+              _Ty=double
+          ]
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\visualizer.h(82): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\visualizer.h(95): warning C4018: '<': signed/unsigned mismatch
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\main.cpp(7): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\main.cpp(37): warning C4018: '<': signed/unsigned mismatch
+c:\users\duoma\desktop\audio-visualizer\audio-visualizer\main.cpp(46): warning C4018: '<': signed/unsigned mismatch
+  Audio-Visualizer.vcxproj -> C:\Users\duoma\Desktop\Audio-Visualizer\Debug\Audio-Visualizer.exe

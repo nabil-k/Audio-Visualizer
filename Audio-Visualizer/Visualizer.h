@@ -63,7 +63,15 @@ class Visualizer {
 			// Updates the frequency rects
 			for (int rect_i = 0; rect_i < freqRangeRects.size(); rect_i++) {
 				float rectHeight = freqRangeRects[rect_i].getSize().y;
-				float newRectHeight = frequencyVisualizationVector[frequencyFrame][rect_i] * -1;
+				float newRectHeight;
+				if (frequencyFrame < frequencyVisualizationVector.size()) {
+					newRectHeight = frequencyVisualizationVector[frequencyFrame][rect_i] * -1;
+				}
+				else {
+					std::cout << "Visualizer has froze because the power spectrum hasn't been calculated fast enough to be in real time. This could be the result of a slow cpu or simply running the code in Debug mode." << std::endl;
+					newRectHeight = rectHeight;
+				}
+				
 				freqRangeRects[rect_i].setSize(sf::Vector2f(3, newRectHeight));
 			}
 			
@@ -88,7 +96,7 @@ class Visualizer {
 
 				float particle_pos_y = amplitudeParticles[particle_i].getPosition().y;
 				
-				if (particle_pos_y < 0) {
+				if (particle_pos_y < -10) {
 					amplitudeParticles.erase(amplitudeParticles.begin() + particle_i);
 					
 				}

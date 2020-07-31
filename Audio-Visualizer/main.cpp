@@ -5,11 +5,16 @@
 int main() {
 
 	srand(time(NULL)); // creates a new seed for rand()
-
+	
+	sf::Image icon;
+	icon.loadFromFile("./images/icon.png"); // File/Image/Pixel
 	sf::ContextSettings settings;
 	settings.antialiasingLevel = 8;
+
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "Audio-Visualizer", sf::Style::Default, settings);
+	window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 	window.setFramerateLimit(60);
+
 
 	Audio audio = Audio();
 	std::thread frequencyAnalyzationThread(&Audio::getSampleOverFrequency, &audio);
