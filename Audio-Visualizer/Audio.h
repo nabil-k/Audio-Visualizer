@@ -154,7 +154,7 @@ class Audio {
 			return hann;
 		}
 
-		// Cool-Turkey FFT algorithim
+		// Cool-Tukey FFT algorithim
 		std::vector< std::complex< double> > FFT(std::vector< std::complex <double> > &samples) {
 			int N = samples.size();
 
